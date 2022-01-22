@@ -1,0 +1,63 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(8,9,10,11,12,13);
+int pirStat= 0;
+int trigPin = 3;
+int echoPin = 4;
+int ledGreen = 6;
+int pirPin = 2;
+const int buzzPin = 7;
+
+void setup(){
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(ledGreen, OUTPUT);
+  pinMode(pirPin, INPUT);
+  pinMode(buzzPin, OUTPUT);
+  lcd.begin(16,2);
+  lcd.clear();
+  Serial.begin(9600);
+ 
+}
+
+void loop(){
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  int duration = pulseIn(echoPin, HIGH);
+  int distance = duration / 58;
+  
+  if (distance <=30)
+  {
+    tone(buzzPin, 523,500);
+    digitalWrite(ledGreen,LOW);
+    lcd.setCursor(0,1);
+    lcd.print("STOP");
+  }
+  
+  if (distance >30)
+  {
+    lcd.setCursor(0,10);
+    lcd.print("AMAN");
+  }
+  lcd.setCursor(0,0);
+  lcd.print("Jarak= ");
+  lcd.print(distance);
+  lcd.print("cm");
+  {
+    pirStat = digitalRead(pirPin); 
+ if (pirStat == HIGH) {            
+   digitalWrite(ledGreen, HIGH);  
+   
+ } 
+ else {
+   digitalWrite(ledGreen, LOW); 
+ }
+  }}
+//
+
+
+
+                  
+  
